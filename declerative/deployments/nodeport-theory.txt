@@ -1,0 +1,13 @@
+if you don't speciy nodePort: 30080 it will dynamically assign one port from range 30000-32768
+
+# Create Firewall Rule
+gcloud compute firewall-rules create fw-rule-gke-node-port \
+    --allow tcp:NODE_PORT
+
+# Replace NODE_PORT
+gcloud compute firewall-rules create fw-rule-gke-node-port \
+    --allow tcp:30080   
+
+# List Firewall Rules
+gcloud compute firewall-rules list    
+
