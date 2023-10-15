@@ -1,0 +1,49 @@
+ Deply Curl-pod and Verify ClusterIP and Headless Services
+
+
+
+# Deploy curl-pod
+kubectl apply -f 02-kube-manifests-curl
+
+# List Services
+kubectl get svc
+
+# GKE Cluster Kubernetes Service Full DNS Name format
+<svc>.<ns>.svc.cluster.local
+
+# Will open up a terminal session into the container
+kubectl exec -it curl-pod -- sh
+
+# ClusterIP Service: nslookup and curl Test
+nslookup myapp1-cip-service.default.svc.cluster.local
+curl myapp1-cip-service.default.svc.cluster.local
+
+### ClusterIP Service nslookup Outptu
+ $ nslookup myapp1-cip-service.default.svc.cluster.local
+Server:		10.24.0.10
+Address:	10.24.0.10:53
+
+Name:	myapp1-cip-service.default.svc.cluster.local
+Address: 10.24.2.34
+
+# Headless Service: nslookup and curl Test
+nslookup myapp1-headless-service.default.svc.cluster.local
+curl myapp1-headless-service.default.svc.cluster.local:8080
+Observation:
+1. There is no specific IP for Headless Service
+2. It will be directly dns resolved to Pod IP
+3. That said we should use the same port as Container Port for Headless Service (VERY VERY IMPORTANT)
+
+### Headless Service nslookup Output
+$ nslookup myapp1-headless-service.default.svc.cluster.local
+Server:		10.24.0.10
+Address:	10.24.0.10:53
+
+Name:	myapp1-headless-service.default.svc.cluster.local
+Address: 10.20.0.25
+Name:	myapp1-headless-service.default.svc.cluster.local
+Address: 10.20.0.26
+Name:	myapp1-headless-service.default.svc.cluster.local
+Address: 10.20.1.28
+Name:	myapp1-headless-service.default.svc.cluster.local
+Address: 10.20.1.29

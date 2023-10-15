@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl-pod
+spec:
+  containers:
+  - name: curl
+    image: curlimages/curl 
+    command: [ "sleep", "600" ]
+
+
+
+# We cannot connect to ClusterIP Services directly from internet to test Headless Service Concept
+# We will deploy a curl pod in GKE Cluster so we can connect to curl pod in GKE Cluster and test the Headless Service Concept
