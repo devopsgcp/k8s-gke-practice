@@ -1,0 +1,26 @@
+# Delete kube-manifests
+kubectl delete -f kube-manifests/
+
+# List Storage Class
+kubectl get sc
+Observation:
+1. Custom storage class deleted
+
+# List PVC
+kubectl get pvc
+Observation:
+1. PVC deleted
+
+# List PV
+kubectl get pv
+Observation:
+1. PV still present
+2. PV STATUS will be in "Released", not used by anyoe.
+
+
+
+
+Go to Compute Engine -> Storage -> Disks
+Search for 8GB Persistent Disk.
+Observation: You should see the disk is still present even after all kube-manifests (storageclass, pvc) all deleted.
+This is due to we have used reclaimPolicy: Retain in Custom Storage Class

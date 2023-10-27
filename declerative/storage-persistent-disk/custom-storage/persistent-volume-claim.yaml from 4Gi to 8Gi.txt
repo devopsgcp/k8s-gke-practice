@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec: 
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: gke-pd-standard-rwo-sc
+  resources: 
+    requests:
+      #storage: 4Gi # Commment at Step-09
+      storage: 8Gi # UnCommment at Step-09
+
+
+
+      # Deploy Kubernetes Manifests
+kubectl apply -f kube-manifests/
+
+# List PVC
+kubectl get pvc
+Observation:
+1. Wait for 2 to 3 mins and automatically CAPACITY value changes from 4Gi to 8Gi
+
+# List PV
+kubectl get pv
+Observation:
+1. Wait for 2 to 3 mins and automatically CAPACITY value changes from 4Gi to 8Gi
+
+# Access Application
+http://<ExternalIP-from-get-service-output>
+Username: admin101
+Password: password101
+Observation:
+1. No impact to underlying MySQL Database data.
+2. VolumeExpansion is seamless without impacting the real data. 
+3. We should find the two users which are present before VolumeExpansion as-is.
+
+
+
+
+
+Go to Compute Engine -> Storage -> Disks
+Search for 8GB Persistent Disk, as 4GB disk expaned to 8GB now.
+Observation: You should see the disk type as Balanced persistent disk
+
+
